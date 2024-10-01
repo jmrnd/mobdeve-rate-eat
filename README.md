@@ -1,1 +1,8 @@
-# mobdeve-rate-eat
+# MOBDEVE Rate Eat
+- Mobile App Project for MOBDEVE T1 AY 2024-2025
+- S16 nonJJAlants
+
+## Group Members
+- CATALUNA, JORICE ERIKA BUNDA
+- MIRANDA, JAMAR LANCE FERNANDEZ
+- SEPERIDAD, ABIGAIL BOBADILLA
