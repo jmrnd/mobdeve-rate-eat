@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
-    private static final String TAG = "RegisterActivity";
+    private static final String TAG = "RegisterActivity"; // For debugging purposes
     private EditText firstNameEditText, lastNameEditText, usernameEditText, emailEditText, passwordEditText, confirmPassEditText;
     private Button registerButton;
     private TextView loginLinkTextView;
@@ -79,6 +79,34 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        // Check if username is available
+        checkUsernameAvailability(username, () -> {
+            // Proceed with registration if available
+            createUserAccount(firstName, lastName, username, email, password);
+        });
+    }
+
+    private void checkUsernameAvailability(String username, Runnable onUsernameAvailable) {
+        db.collection("users")
+                .whereEqualTo("username", username)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            // Username is available
+                            onUsernameAvailable.run();
+                        } else {
+                            // Username is taken
+                            Toast.makeText(RegisterActivity.this, "Username is already taken", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.w(TAG, "Error checking username availability", task.getException());
+                        Toast.makeText(RegisterActivity.this, "Error checking username availability", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void createUserAccount(String firstName, String lastName, String username, String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
