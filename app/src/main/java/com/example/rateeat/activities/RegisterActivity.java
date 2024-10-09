@@ -1,7 +1,8 @@
-package com.example.rateeat;
+package com.example.rateeat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,18 +14,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.rateeat.R;
+import com.example.rateeat.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class Register extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
+public class RegisterActivity extends AppCompatActivity {
 
+    private static final String TAG = "RegisterActivity";
     private EditText firstNameEditText, lastNameEditText, usernameEditText, emailEditText, passwordEditText, confirmPassEditText;
     private Button registerButton;
     private TextView loginLinkTextView;
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,7 @@ public class Register extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
 
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
@@ -51,7 +56,7 @@ public class Register extends AppCompatActivity {
 
         registerButton.setOnClickListener(v -> signUp());
         loginLinkTextView.setOnClickListener(v -> {
-            startActivity(new Intent(Register.this, Login.class));
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             finish();
         });
     }
@@ -79,27 +84,41 @@ public class Register extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            String userId = user.getUid();
-                            saveUserData(userId, firstName, lastName, username, email);
+                            saveUserData(user.getUid(), firstName, lastName, username, email);
                         }
                     } else {
-                        Toast.makeText(Register.this, "Registration failed: " + task.getException().getMessage(),
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(RegisterActivity.this, "Registration failed: " + task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void saveUserData(String userId, String firstName, String lastName, String username, String email) {
-        User user = new User(firstName, lastName, username, email);
-        mDatabase.child("users").child(userId).setValue(user)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(Register.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Register.this, MainActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(Register.this, "Failed to save user data", Toast.LENGTH_SHORT).show();
-                    }
+        Map<String, Object> user = new HashMap<>();
+        user.put("firstName", firstName);
+        user.put("lastName", lastName);
+        user.put("username", username);
+        user.put("email", email);
+
+        db.collection("users").document(userId)
+                .set(user)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "User data saved successfully");
+                    Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                    redirectToLogin(email);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error saving user data", e);
+                    Toast.makeText(RegisterActivity.this, "Failed to save user data: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
+    }
+
+    private void redirectToLogin(String email) {
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        intent.putExtra("EMAIL", email);
+        FirebaseAuth.getInstance().signOut();
+        startActivity(intent);
+        finish();
     }
 }

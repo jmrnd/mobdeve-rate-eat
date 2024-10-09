@@ -1,8 +1,9 @@
-package com.example.rateeat;
+package com.example.rateeat.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,10 +15,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.rateeat.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
     private TextView forgotPasswordTextView, registerNowTextView;
@@ -42,16 +45,20 @@ public class Login extends AppCompatActivity {
         forgotPasswordTextView = findViewById(R.id.forgotPass);
         registerNowTextView = findViewById(R.id.registerNow);
 
+        String email = getIntent().getStringExtra("EMAIL");
+        if (email != null && !email.isEmpty()) {
+            emailEditText.setText(email);
+            passwordEditText.postDelayed(() -> {
+                passwordEditText.requestFocus();
+                // Optionally, show the keyboard
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(passwordEditText, InputMethodManager.SHOW_IMPLICIT);
+            }, 300); // 300ms delay
+        }
+
         loginButton.setOnClickListener(v -> loginUser());
         forgotPasswordTextView.setOnClickListener(v -> resetPassword());
-
-        registerNowTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Login.this, Register.class);
-                startActivity(intent);
-            }
-        });
+        registerNowTextView.setOnClickListener(v -> startRegisterActivity());
     }
 
     private void loginUser() {
@@ -66,12 +73,12 @@ public class Login extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Login.this, MainActivity.class));
+                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(Login.this, "Authentication failed: " + task.getException().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Authentication failed: " + task.getException().getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -87,12 +94,15 @@ public class Login extends AppCompatActivity {
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(Login.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(Login.this, "Failed to send reset email: " + task.getException().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Failed to send reset email: " + task.getException().getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 });
     }
 
+    private void startRegisterActivity() {
+        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+    }
 }
