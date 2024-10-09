@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "188058720828",
+    "project_id": "mobdeve-rate-eat",
+    "storage_bucket": "mobdeve-rate-eat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188058720828:android:0c910ecc34566134be0139",
+        "android_client_info": {
+          "package_name": "com.example.rateeat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAe_icg_PMLMRuzYE60f47JBWFcNaqQbE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

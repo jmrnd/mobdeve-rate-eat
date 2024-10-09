@@ -25,16 +25,16 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/uname"
+            android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
             android:fontFamily="@font/inter_regular"
-            android:hint="Username" />
+            android:hint="juandelacruz@email.com"
+            android:inputType="text" />
 
         <EditText
-            android:id="@+id/pass"
+            android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -52,7 +52,7 @@
             android:text="Forgot Password?" />
 
         <Button
-            android:id="@+id/loginBtn"
+            android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_bold"
@@ -83,7 +83,9 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/inter_bold"
                 android:textColor="#535197"
-                android:text="Register Now" />
+                android:text="Register Now"
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
