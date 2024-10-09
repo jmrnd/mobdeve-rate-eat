@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="@font/inter_regular"
-            android:hint="Juan"
+            android:hint="e.g. Juan"
             android:inputType="text" />
 
         <TextView
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="@font/inter_regular"
-            android:hint="Dela Cruz"
+            android:hint="e.g. Dela Cruz"
             android:inputType="text" />
 
         <TextView
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="@font/inter_regular"
-            android:hint="juandlcrz"
+            android:hint="e.g. juandelacruz"
             android:inputType="text" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="@font/inter_regular"
-            android:hint="name@example.com"
+            android:hint="e.g. juandelacruz@email.com"
             android:inputType="textEmailAddress" />
 
         <TextView
