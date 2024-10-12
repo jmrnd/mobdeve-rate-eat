@@ -1,58 +1,102 @@
 package com.example.rateeat.models;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
+    private String userId;
+    private String email;
+    private String firstName;
+    private String lastName;
 
-    public String firstName;
-    public String lastName;
-    public String username;
-    public String email;
+    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public User() {}
+    public User() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
 
-    public User(String firstName, String lastName, String username, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
+    public User(String userId, String email, String firstName, String lastName) {
+        this.userId = userId;
         this.email = email;
-    }
-
-    public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    // Getters and setters
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUserId() {
+        return userId;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getFirstName() {
+        return firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    // Authentication methods
+
+    public static void registerUser(String email, String password, String firstName, String lastName, OnCompleteListener<AuthResult> listener) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            User newUser = new User(firebaseUser.getUid(), email, firstName, lastName);
+                            saveUserToFirestore(newUser);
+                        }
+                    }
+                    listener.onComplete(task);
+                });
+    }
+
+    public static void loginUser(String email, String password, OnCompleteListener<AuthResult> listener) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(listener);
+    }
+
+    public static void forgotPassword(String email, OnCompleteListener<Void> listener) {
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(listener);
+    }
+
+    public static void logoutUser() {
+        mAuth.signOut();
+    }
+
+    public static FirebaseUser getCurrentUser() {
+        return mAuth.getCurrentUser();
+    }
+
+    private static void saveUserToFirestore(User user) {
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("email", user.getEmail());
+        userMap.put("firstName", user.getFirstName());
+        userMap.put("lastName", user.getLastName());
+
+        db.collection("users").document(user.getUserId())
+                .set(userMap)
+                .addOnSuccessListener(aVoid -> {
+                    // User data saved successfully
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure
+                });
+    }
 }
