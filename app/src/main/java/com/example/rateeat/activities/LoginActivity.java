@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.rateeat.R;
+import com.example.rateeat.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
@@ -24,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
     private TextView forgotPasswordTextView, registerNowTextView;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,6 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        mAuth = FirebaseAuth.getInstance();
 
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
@@ -70,17 +68,15 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Authentication failed: " + task.getException().getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+        User.loginUser(email, password, task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                startAllRestaurantsActivity();
+            } else {
+                Toast.makeText(LoginActivity.this, "Authentication failed: " + task.getException().getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void resetPassword() {
@@ -91,18 +87,23 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        mAuth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Failed to send reset email: " + task.getException().getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+        User.forgotPassword(email, task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(LoginActivity.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(LoginActivity.this, "Failed to send reset email: " + task.getException().getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void startRegisterActivity() {
         startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+    }
+
+    private void startAllRestaurantsActivity() {
+        Intent intent = new Intent(LoginActivity.this, AllRestaurantsActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
