@@ -2,15 +2,19 @@ package com.example.rateeat.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rateeat.R;
 import com.example.rateeat.adapters.RestaurantAdapter;
 import com.example.rateeat.models.Restaurant;
+import com.google.android.material.search.SearchView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -30,6 +34,10 @@ public class AllRestaurantsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_restaurants);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("All Restaurants");
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -40,6 +48,17 @@ public class AllRestaurantsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         checkAndLoadRestaurants();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setHint("Search Restaurant");
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void checkAndLoadRestaurants() {
