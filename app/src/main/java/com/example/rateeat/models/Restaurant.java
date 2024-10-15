@@ -3,9 +3,12 @@ package com.example.rateeat.models;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -110,5 +113,22 @@ public class Restaurant {
                 .document(restaurantId)
                 .delete()
                 .addOnCompleteListener(listener);
+    }
+
+    public static ListenerRegistration getRestaurantsRealtime(OnSuccessListener<List<Restaurant>> onSuccess, OnFailureListener onFailure) {
+        return FirebaseFirestore.getInstance()
+                .collection("restaurants")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        onFailure.onFailure(error);
+                        return;
+                    }
+
+                    List<Restaurant> restaurants = new ArrayList<>();
+                    for (DocumentSnapshot doc : value.getDocuments()) {
+                        restaurants.add(doc.toObject(Restaurant.class));
+                    }
+                    onSuccess.onSuccess(restaurants);
+                });
     }
 }

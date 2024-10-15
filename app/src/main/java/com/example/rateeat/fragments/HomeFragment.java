@@ -12,11 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.rateeat.R;
 import com.example.rateeat.adapters.RestaurantAdapter;
 import com.example.rateeat.models.Restaurant;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,9 +27,12 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RestaurantAdapter adapter;
-    private List<Restaurant> restaurants;
+    private List<Restaurant> restaurants = new ArrayList<>(); // Initialize here
     private FirebaseFirestore db;
+    private ListenerRegistration restaurantListener;
+    private boolean isRefreshing = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,15 +41,17 @@ public class HomeFragment extends Fragment {
 
         // Initialize RecyclerView and other views
         recyclerView = view.findViewById(R.id.recyclerView);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        restaurants = new ArrayList<>();
         adapter = new RestaurantAdapter(restaurants, getContext());
         recyclerView.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
 
-        // Load restaurants from Firestore
+        swipeRefreshLayout.setOnRefreshListener(this::refreshContent);
+
         checkAndLoadRestaurants();
 
         return view;
@@ -60,8 +67,7 @@ public class HomeFragment extends Fragment {
                     loadRestaurants();
                 }
             } else {
-                Toast.makeText(getContext(), "Error checking restaurants: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-            }
+                onRestaurantsError("Error checking restaurants: " + task.getException().getMessage());            }
         });
     }
 
@@ -78,36 +84,56 @@ public class HomeFragment extends Fragment {
         for (Restaurant restaurant : dummyRestaurants) {
             Restaurant.addRestaurant(restaurant, task -> {
                 if (!task.isSuccessful()) {
-                    Log.e("AllRestaurantsFragment", "Error adding dummy restaurant: " + restaurant.getName(), task.getException());
-                }
+                    Log.e("HomeFragment", "Error adding dummy restaurant: " + restaurant.getName(), task.getException());                }
             });
         }
-
-        // For debugging
-//        for (Restaurant restaurant : dummyRestaurants) {
-//            Restaurant.addRestaurant(restaurant, task -> {
-//                if (task.isSuccessful()) {
-//                    Toast.makeText(this, "Added dummy restaurant: " + restaurant.getName(), Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(this, "Error adding dummy restaurant: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-//                }
-//            });
-//        }
 
         loadRestaurants();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (restaurantListener != null) {
+            restaurantListener.remove();
+        }
+    }
+
+    public void refreshContent() {
+        if (!isRefreshing) {
+            isRefreshing = true;
+            recyclerView.smoothScrollToPosition(0);
+            swipeRefreshLayout.setRefreshing(true);
+            loadRestaurants();
+        }
+    }
+
     private void loadRestaurants() {
-        Restaurant.getAllRestaurants(task -> {
-            if (task.isSuccessful()) {
-                restaurants.clear();
-                for (Restaurant restaurant : task.getResult().toObjects(Restaurant.class)) {
-                    restaurants.add(restaurant);
-                }
-                adapter.notifyDataSetChanged();
-            } else {
-                Toast.makeText(getContext(), "Error loading restaurants: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        if (restaurantListener != null) {
+            restaurantListener.remove();
+        }
+
+        restaurantListener = Restaurant.getRestaurantsRealtime(
+                this::onRestaurantsLoaded,
+                e -> onRestaurantsError("Error loading restaurants: " + e.getMessage())
+        );
+    }
+
+    private void onRestaurantsLoaded(List<Restaurant> newRestaurants) {
+        if (isAdded() && getContext() != null) {
+            restaurants.clear();
+            restaurants.addAll(newRestaurants);
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+            isRefreshing = false;
+        }
+    }
+
+    private void onRestaurantsError(String errorMessage) {
+        if (isAdded() && getContext() != null) {
+            Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+            swipeRefreshLayout.setRefreshing(false);
+            isRefreshing = false;
+        }
     }
 }

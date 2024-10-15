@@ -3,6 +3,9 @@ package com.example.rateeat.activities;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +24,10 @@ import com.example.rateeat.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
+    private HomeFragment homeFragment;
+    private ProfileFragment profileFragment;
+    private ImageView searchIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,66 +37,64 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Set up the toolbar as the action bar
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("All Restaurants");
 
-        // Set up the onApplyWindowInsets listener for padding
+        searchIcon = binding.toolbar.findViewById(R.id.searchIcon);
+        searchIcon.setOnClickListener(v -> {
+            // For now, just display a toast
+            Toast.makeText(this, "Search clicked", Toast.LENGTH_SHORT).show();
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        replaceFragment(new HomeFragment());
+        initializeFragments();
+        setupBottomNavigation();
+    }
 
+    private void initializeFragments() {
+        homeFragment = new HomeFragment();
+        profileFragment = new ProfileFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.frameLayout, homeFragment, "home")
+                .add(R.id.frameLayout, profileFragment, "profile")
+                .hide(profileFragment)
+                .commit();
+    }
+
+    private void setupBottomNavigation() {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.home) {
-                replaceFragment(new HomeFragment());
-                getSupportActionBar().setTitle("All Restaurants");
+                if (binding.bottomNavigationView.getSelectedItemId() == id) {
+                    if (homeFragment != null) {
+                        homeFragment.refreshContent();
+                    }
+                } else {
+                    showFragment(homeFragment);
+                    getSupportActionBar().setTitle("All Restaurants");
+                    searchIcon.setVisibility(View.VISIBLE);
+                }
             } else if (id == R.id.profile) {
-                replaceFragment(new ProfileFragment());
+                showFragment(profileFragment);
                 getSupportActionBar().setTitle("Profile");
+                searchIcon.setVisibility(View.GONE);
             }
             return true;
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
-        return true;
+    private void showFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .hide(homeFragment)
+                .hide(profileFragment)
+                .show(fragment)
+                .commit();
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // Get the current fragment
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
-
-        // Check if the current fragment is ProfileFragment
-        if (currentFragment instanceof ProfileFragment) {
-            // Hide the search icon
-            menu.findItem(R.id.search).setVisible(false);
-        } else {
-            // Show the search icon
-            menu.findItem(R.id.search).setVisible(true);
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here
-        int id = item.getItemId();
-        // Implement action handling if necessary
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.commit();
-    }
 }
