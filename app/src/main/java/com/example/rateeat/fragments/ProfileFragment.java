@@ -1,4 +1,4 @@
-package com.example.rateeat.activities;
+package com.example.rateeat.fragments;
 
 import android.os.Bundle;
 

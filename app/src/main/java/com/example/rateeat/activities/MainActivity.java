@@ -6,7 +6,6 @@ import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -16,6 +15,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.rateeat.R;
 import com.example.rateeat.databinding.ActivityMainBinding;
+import com.example.rateeat.fragments.HomeFragment;
+import com.example.rateeat.fragments.ProfileFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
