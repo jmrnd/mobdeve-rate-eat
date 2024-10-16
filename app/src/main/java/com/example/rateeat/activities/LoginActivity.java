@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startAllRestaurantsActivity() {
-        Intent intent = new Intent(LoginActivity.this, AllRestaurantsActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
