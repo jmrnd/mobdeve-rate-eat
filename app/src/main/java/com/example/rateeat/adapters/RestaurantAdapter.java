@@ -39,11 +39,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Restaurant restaurant = restaurants.get(position);
+        int resourceId = context.getResources().getIdentifier(restaurant.getImageResourceName(), "drawable", context.getPackageName());
         holder.nameTextView.setText(restaurant.getName());
         holder.ratingBar.setRating((float) restaurant.getAverageRating());
         holder.ratingTextView.setText(String.format("%.1f", restaurant.getAverageRating()));
         holder.reviewCountTextView.setText(String.format("(%d reviews)", restaurant.getReviewCount()));
         holder.locationTextView.setText(restaurant.getLocation());
+        if (resourceId != 0) {
+            holder.imageView.setImageResource(resourceId);
+        } else {
+            holder.imageView.setImageResource(R.drawable.default_image);
+        }
 
         holder.itemView.setOnClickListener((View v) -> {
             Toast.makeText(context, restaurant.getName(), Toast.LENGTH_SHORT).show();
@@ -59,13 +65,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
             context.startActivity(i);
         });
-
-        int resourceId = context.getResources().getIdentifier(restaurant.getImageResourceName(), "drawable", context.getPackageName());
-        if (resourceId != 0) {
-            holder.imageView.setImageResource(resourceId);
-        } else {
-            holder.imageView.setImageResource(R.drawable.default_image);
-        }
     }
 
     @Override
