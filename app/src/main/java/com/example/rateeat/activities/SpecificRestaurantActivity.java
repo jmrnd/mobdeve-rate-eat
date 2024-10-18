@@ -37,13 +37,7 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
             return insets;
         });
 
-//        i.putExtra("name",restaurant.getName());
-//        i.putExtra("description",restaurant.getDescription());
-//        i.putExtra("location",restaurant.getLocation());
-//        i.putExtra("averageRating", restaurant.getAverageRating());
-//        i.putExtra("reviewCount", restaurant.getReviewCount());
-//        i.putExtra("image", restaurant.getImageResourceName());
-
+        //This finds the xml elements
         restaurantImageView = findViewById(R.id.restaurantImg);
         nameTextView = findViewById(R.id.restaurantNameTextView);
         ratingBar = findViewById(R.id.ratingBar);
@@ -55,12 +49,14 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
 
         Intent i = getIntent();
 
+
+        //This sets the text onto the activity
         int imageResId = getResources().getIdentifier("image", "drawable", getPackageName());
         restaurantImageView.setImageResource(imageResId);
         nameTextView.setText(i.getStringExtra("name"));
         ratingBar.setRating((float) i.getDoubleExtra("averageRating", 0.0));
-        ratingTextView.setText(i.getStringExtra("averageRating"));
-        reviewCountTextView.setText(i.getStringExtra("reviewCount"));
+        ratingTextView.setText(String.valueOf(i.getDoubleExtra("averageRating", 0.0)));
+        reviewCountTextView.setText(String.format("(%d reviews)", i.getIntExtra("reviewCount", -1)));
         locationTextView.setText(i.getStringExtra("location"));
         restaurantDescTextView.setText(i.getStringExtra("description"));
 
