@@ -51,7 +51,8 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
 
 
         //This sets the text onto the activity
-        int imageResId = getResources().getIdentifier("image", "drawable", getPackageName());
+        String imagename = i.getStringExtra("image");
+        int imageResId = getResources().getIdentifier(imagename, "drawable", getPackageName());
         restaurantImageView.setImageResource(imageResId);
         nameTextView.setText(i.getStringExtra("name"));
         ratingBar.setRating((float) i.getDoubleExtra("averageRating", 0.0));
