@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Rate Eat</string>
+    <string name="skip"><u>Skip</u></string>
 </resources>
