@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                             homeFragment.refreshContent();
                         }
                     } else {
+                        clearBackStack();
                         showFragment(homeFragment);
                         if (getSupportActionBar() != null) {
                             getSupportActionBar().setTitle("All Restaurants");
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 } else if (id == R.id.profile) {
+                    clearBackStack();
                     showFragment(profileFragment);
                     if (getSupportActionBar() != null) {
                         getSupportActionBar().setTitle("Profile");
