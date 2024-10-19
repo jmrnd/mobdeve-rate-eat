@@ -1,6 +1,9 @@
 package com.example.rateeat.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.rateeat.R;
 import com.example.rateeat.activities.LoginActivity;
+import com.example.rateeat.activities.MainActivity;
 
 public class ProfileFragment extends Fragment {
 
@@ -59,13 +63,34 @@ public class ProfileFragment extends Fragment {
         });
 
         logOut.setOnClickListener(v -> {
-            Intent i = new Intent(getActivity(), LoginActivity.class);
-
-            // clears all tasks
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
+            AlertDialog dialog = createDialog();
+            dialog.show();
         });
 
         return view;
+    }
+
+    private AlertDialog createDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setMessage("Are you sure you want to log out?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Add your log-out logic here
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+
+                // clears all tasks
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Dismiss the dialog when "No" is clicked
+                dialogInterface.dismiss();
+            }
+        });
+        return builder.create();
     }
 }

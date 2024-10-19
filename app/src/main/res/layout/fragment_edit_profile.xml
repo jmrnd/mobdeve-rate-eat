@@ -74,7 +74,7 @@
             android:inputType="textEmailAddress" />
 
         <Button
-            android:id="@+id/registerButton"
+            android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_bold"

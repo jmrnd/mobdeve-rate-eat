@@ -2,6 +2,7 @@ package com.example.rateeat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,12 +62,8 @@ public class MainActivity extends AppCompatActivity {
         initializeFragments();
         setupBottomNavigation();
 
-        if (getIntent().getBooleanExtra("OPEN_PROFILE", false)) {
-            showFragment(profileFragment);
-            binding.bottomNavigationView.setSelectedItemId(R.id.profile);
-        } else {
-            showFragment(homeFragment);
-        }
+        // Show home fragment by default
+        showFragment(homeFragment);
     }
 
     private void initializeFragments() {
@@ -81,29 +78,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
+            binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
 
-            if (id == R.id.home) {
-                if (binding.bottomNavigationView.getSelectedItemId() == id) {
-                    if (homeFragment != null) {
-                        homeFragment.refreshContent();
+                if (id == R.id.home) {
+                    if (binding.bottomNavigationView.getSelectedItemId() == id) {
+                        if (homeFragment != null) {
+                            homeFragment.refreshContent();
+                        }
+                    } else {
+                        showFragment(homeFragment);
+                        if (getSupportActionBar() != null) {
+                            getSupportActionBar().setTitle("All Restaurants");
+                        }
+                        if (searchIcon != null) {
+                            searchIcon.setVisibility(View.VISIBLE);
+                        }
                     }
-                } else {
-                    clearBackStack();  // Clear the back stack before switching to Home
-                    showFragment(homeFragment);
-                    getSupportActionBar().setTitle("All Restaurants");
-                    searchIcon.setVisibility(View.VISIBLE);
+                } else if (id == R.id.profile) {
+                    showFragment(profileFragment);
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setTitle("Profile");
+                    }
+                    if (searchIcon != null) {
+                        searchIcon.setVisibility(View.GONE);
+                    }
                 }
-            } else if (id == R.id.profile) {
-                clearBackStack();  // Clear the back stack before switching to Profile
-                showFragment(profileFragment);
-                getSupportActionBar().setTitle("Profile");
-                searchIcon.setVisibility(View.GONE);
-            }
 
-            return true;
-        });
+                return true;
+            });
     }
 
     private void showFragment(Fragment fragment) {

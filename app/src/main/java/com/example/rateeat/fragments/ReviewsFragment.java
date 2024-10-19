@@ -54,8 +54,8 @@ public class ReviewsFragment extends Fragment {
     // This loads dummy data for reviews
     private void loadDummyData() {
         reviews = new ArrayList<>();
-        reviews.add(new Review("null", "Jollibee", "Bida ang saya", "05/21/24","jollibee"));
-        reviews.add(new Review("null", "Mcdonalds", "I love it", "01/01/24", "mcdonalds"));
-        reviews.add(new Review("null", "KFC", "Fingerlickin' good", "11/11/23","kfc"));
+        reviews.add(new Review("null", "Jollibee", "Bida ang saya","jollibee", "05/21/24"));
+        reviews.add(new Review("null", "Mcdonalds", "I love it", "mcdonalds", "01/01/24"));
+        reviews.add(new Review("null", "KFC", "Fingerlickin' good","kfc", "11/11/23"));
     }
 }
