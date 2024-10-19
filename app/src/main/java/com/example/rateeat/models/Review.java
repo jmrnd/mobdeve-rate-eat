@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RestoReview {
+public class Review {
     private String id;
     private String name;
     private String ratingText;
@@ -15,7 +15,7 @@ public class RestoReview {
 
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public RestoReview(String id, String name, String ratingText, String date, String userImage){
+    public Review(String id, String name, String ratingText, String date, String userImage){
         this.id = id;
         this.name = name;
         this.ratingText = ratingText;
@@ -37,12 +37,12 @@ public class RestoReview {
     public String getDate(){return this.date;}
     public void setDate(String date){this.date = date;}
 
-    public static void addReview(RestoReview restoReview, OnCompleteListener<Void> listener) {
+    public static void addReview(Review review, OnCompleteListener<Void> listener) {
         Map<String, Object> restoReviewMap = new HashMap<>();
-        restoReviewMap.put("name", restoReview.getName());
-        restoReviewMap.put("description", restoReview.getComment());
-        restoReviewMap.put("image", restoReview.getUserImageName());
-        restoReviewMap.put("date", restoReview.getDate());
+        restoReviewMap.put("name", review.getName());
+        restoReviewMap.put("description", review.getComment());
+        restoReviewMap.put("image", review.getUserImageName());
+        restoReviewMap.put("date", review.getDate());
 
 
         db.collection("restaurants")

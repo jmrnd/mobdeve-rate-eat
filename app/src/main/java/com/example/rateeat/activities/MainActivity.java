@@ -70,21 +70,25 @@ public class MainActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
+
             if (id == R.id.home) {
                 if (binding.bottomNavigationView.getSelectedItemId() == id) {
                     if (homeFragment != null) {
                         homeFragment.refreshContent();
                     }
                 } else {
+                    clearBackStack();  // Clear the back stack before switching to Home
                     showFragment(homeFragment);
                     getSupportActionBar().setTitle("All Restaurants");
                     searchIcon.setVisibility(View.VISIBLE);
                 }
             } else if (id == R.id.profile) {
+                clearBackStack();  // Clear the back stack before switching to Profile
                 showFragment(profileFragment);
                 getSupportActionBar().setTitle("Profile");
                 searchIcon.setVisibility(View.GONE);
             }
+
             return true;
         });
     }
@@ -95,5 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 .hide(profileFragment)
                 .show(fragment)
                 .commit();
+    }
+
+    private void clearBackStack() {
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
     }
 }

@@ -11,19 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rateeat.R;
-import com.example.rateeat.activities.UserReviewsActivity;
-import com.example.rateeat.models.RestoReview;
+import com.example.rateeat.models.Review;
 
 import java.util.List;
 
-public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.ViewHolder> {
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
-    List<RestoReview> userReviews;
+    List<Review> userReviews;
     Context context;
 
-    public UserReviewAdapter(List<RestoReview> userReviews, UserReviewsActivity activity) {
+    public ReviewAdapter(List<Review> userReviews, Context context) {
         this.userReviews = userReviews;
-        this.context = activity;
+        this.context = context;
     }
 
     @NonNull
@@ -35,12 +34,12 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RestoReview restoReview = userReviews.get(position);
-        holder.textViewName.setText(restoReview.getName());
-        holder.textViewRating.setText(restoReview.getComment());
-        holder.reviewDate.setText(restoReview.getDate());
+        Review review = userReviews.get(position);
+        holder.textViewName.setText(review.getName());
+        holder.textViewRating.setText(review.getComment());
+        holder.reviewDate.setText(review.getDate());
 
-        int resourceId = context.getResources().getIdentifier(restoReview.getUserImageName(), "drawable", context.getPackageName());
+        int resourceId = context.getResources().getIdentifier(review.getUserImageName(), "drawable", context.getPackageName());
         if (resourceId != 0) {
             holder.userImage.setImageResource(resourceId);
         } else {
