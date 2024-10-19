@@ -15,12 +15,12 @@ public class Review {
 
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public Review(String id, String name, String ratingText, String userImage, String date){
+    public Review(String id, String name, String ratingText, String date, String userImage){
         this.id = id;
         this.name = name;
         this.ratingText = ratingText;
-        this.userImage = userImage;
         this.date = date;
+        this.userImage = userImage;
     }
     public String getId(){return id;}
     public void setId(String id){this.id = id;}
@@ -41,7 +41,8 @@ public class Review {
         Map<String, Object> restoReviewMap = new HashMap<>();
         restoReviewMap.put("name", review.getName());
         restoReviewMap.put("description", review.getComment());
-        restoReviewMap.put("location", review.getUserImageName());
+        restoReviewMap.put("image", review.getUserImageName());
+        restoReviewMap.put("date", review.getDate());
 
         db.collection("restaurants")
                 .document()

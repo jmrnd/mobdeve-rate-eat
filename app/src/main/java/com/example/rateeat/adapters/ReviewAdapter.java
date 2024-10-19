@@ -10,32 +10,31 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rateeat.activities.RestaurantActivity;
-import com.example.rateeat.models.Review;
 import com.example.rateeat.R;
+import com.example.rateeat.models.Review;
 
 import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
-    List<Review> reviews;
+    List<Review> userReviews;
     Context context;
 
-    public ReviewAdapter(List<Review> reviews, RestaurantActivity activity) {
-        this.reviews = reviews;
-        this.context = activity;
+    public ReviewAdapter(List<Review> userReviews, Context context) {
+        this.userReviews = userReviews;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public ReviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review, parent, false);
-        return new ReviewAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Review review = reviews.get(position);
+        Review review = userReviews.get(position);
         holder.textViewName.setText(review.getName());
         holder.textViewRating.setText(review.getComment());
         holder.reviewDate.setText(review.getDate());
@@ -50,7 +49,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return reviews.size();
+        return userReviews.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

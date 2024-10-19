@@ -49,7 +49,7 @@
                     android:textColor="#1F2024"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:text="Name" />
+                    tools:text="Restaurant/User Name" />
 
                 <TextView
                     android:id="@+id/reviewDate"
@@ -57,14 +57,14 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:textColor="#71727A"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     tools:text="mm/dd/yyyy" />
 
             </LinearLayout>
 
             <RatingBar
                 android:id="@+id/ratingBar"
-                style="@style/Widget.AppCompat.RatingBar.Small"
+                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -77,58 +77,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/inter_regular"
-                android:textColor="#000000"
+                android:textColor="#71727A"
                 android:textSize="14sp"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:layout_marginEnd="8dp"
-                        app:srcCompat="@drawable/default_image" />
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:layout_marginEnd="8dp"
-                        app:srcCompat="@drawable/default_image" />
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:layout_marginEnd="8dp"
-                        app:srcCompat="@drawable/default_image" />
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:layout_marginEnd="8dp"
-                        app:srcCompat="@drawable/default_image" />
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/default_image" />
-                </LinearLayout>
-            </HorizontalScrollView>
-
         </LinearLayout>
     </LinearLayout>
 
