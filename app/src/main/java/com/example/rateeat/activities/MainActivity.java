@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private ProfileFragment profileFragment;
     private ImageView searchIcon;
+    private boolean isLoggedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +53,15 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Check if user skipped login
+        boolean skippedLogin = getIntent().getBooleanExtra("SKIP_LOGIN", false);
+        isLoggedIn = !skippedLogin;
+
         initializeFragments();
         setupBottomNavigation();
+
+        // Show home fragment by default
+        showFragment(homeFragment);
     }
 
     private void initializeFragments() {

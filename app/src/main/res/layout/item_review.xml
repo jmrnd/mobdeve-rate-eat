@@ -81,7 +81,6 @@
                 android:textColor="#71727A"
                 android:textSize="14sp"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-
         </LinearLayout>
     </LinearLayout>
 

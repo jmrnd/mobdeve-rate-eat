@@ -53,7 +53,7 @@
         android:layout_marginBottom="20dp"
         android:backgroundTint="#5652CC"
         android:fontFamily="@font/inter_bold"
-        android:text="Login" />
+        android:text="Log In" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/inter_bold"
-            android:text="Register Now"
+            android:text="Sign Up"
             android:textColor="#535197" />
     </LinearLayout>
 

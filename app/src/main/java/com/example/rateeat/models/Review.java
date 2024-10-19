@@ -44,7 +44,6 @@ public class Review {
         restoReviewMap.put("image", review.getUserImageName());
         restoReviewMap.put("date", review.getDate());
 
-
         db.collection("restaurants")
                 .document()
                 .set(restoReviewMap)
