@@ -81,6 +81,49 @@
                 android:textColor="#71727A"
                 android:textSize="14sp"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/default_image" />
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/default_image" />
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/default_image" />
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/default_image" />
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/default_image" />
+                </LinearLayout>
+            </HorizontalScrollView>
         </LinearLayout>
     </LinearLayout>
 
