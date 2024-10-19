@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign up"
+            android:text="Sign Up"
             android:textSize="25dp"
             android:fontFamily="@font/inter_black"
             android:textStyle="bold" />
@@ -127,7 +127,7 @@
             android:backgroundTint="#5652CC"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:text="Register" />
+            android:text="Sign Up" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/inter_bold"
-                android:text="Login"
+                android:text="Log In"
                 android:textColor="#535197" />
         </LinearLayout>
     </LinearLayout>

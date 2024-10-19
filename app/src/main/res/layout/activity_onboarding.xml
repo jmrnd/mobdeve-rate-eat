@@ -82,7 +82,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#5652CC"
                 android:fontFamily="@font/inter_bold"
-                android:text="Login" />
+                android:text="Log In" />
 
             <Button
                 android:id="@+id/signupButton"
