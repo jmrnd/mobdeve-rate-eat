@@ -52,7 +52,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         }
 
         holder.itemView.setOnClickListener((View v) -> {
-            Toast.makeText(context, restaurant.getName(), Toast.LENGTH_SHORT).show();
             Intent i = new Intent(context, RestaurantActivity.class);
 
             //These are the data that will be passed from MainActivity to SpecificRestaurantActivity
