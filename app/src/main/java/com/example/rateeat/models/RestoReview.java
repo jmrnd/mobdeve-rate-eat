@@ -34,7 +34,7 @@ public class RestoReview {
     public String getUserImageName(){return userImage;}
     public void setUserImageName(String userImage){this.userImage = userImage;}
 
-    public String getDate(){return userImage;}
+    public String getDate(){return this.date;}
     public void setDate(String date){this.date = date;}
 
     public static void addReview(RestoReview restoReview, OnCompleteListener<Void> listener) {
