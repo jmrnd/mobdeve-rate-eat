@@ -212,5 +212,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
+        android:onClick = "onClickAddReview"
         android:padding="16dp"/>
 </RelativeLayout>

@@ -36,6 +36,9 @@
         <activity
             android:name=".activities.RestaurantActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.AddReview"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -2,6 +2,8 @@ package com.example.rateeat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ public class RestaurantActivity extends AppCompatActivity {
     TextView dotTextView;
     TextView locationTextView;
     TextView restaurantDescTextView;
+    Button addReviewBtn;
 
     private RecyclerView recyclerView;
     private ReviewAdapter adapter;
@@ -55,6 +58,7 @@ public class RestaurantActivity extends AppCompatActivity {
         dotTextView = findViewById(R.id.dotTextView);
         locationTextView = findViewById(R.id.locationTextView);
         restaurantDescTextView = findViewById(R.id.restaurantDescTextView);
+        addReviewBtn = findViewById(R.id.addReview);
 
         recyclerView = findViewById(R.id.reviewRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -131,6 +135,11 @@ public class RestaurantActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public void onClickAddReview(View v){
+        Intent i = new Intent(RestaurantActivity.this, AddReview.class);
+        startActivity(i);
     }
 
 }
