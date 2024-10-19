@@ -67,7 +67,6 @@ public class RestaurantActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-
     //This loads the description of the restaurants
     public void setRestaurantDetails() {
         Intent i = getIntent();

@@ -15,13 +15,14 @@ public class Review {
 
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public Review(String id, String name, String ratingText, String date, String userImage){
+    public Review(String id, String name, String ratingText, String userImage, String date){
         this.id = id;
         this.name = name;
         this.ratingText = ratingText;
         this.date = date;
         this.userImage = userImage;
     }
+
     public String getId(){return id;}
     public void setId(String id){this.id = id;}
 
