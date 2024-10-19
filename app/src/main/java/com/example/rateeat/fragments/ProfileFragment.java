@@ -1,66 +1,83 @@
 package com.example.rateeat.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.rateeat.R;
+import com.example.rateeat.activities.ChangePasswordActivity;
+import com.example.rateeat.activities.EditProfileActivity;
+import com.example.rateeat.activities.LoginActivity;
+import com.example.rateeat.activities.UserReviewsActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private LinearLayout myReviews;
+    private LinearLayout editProfile;
+    private LinearLayout changePassword;
+    private LinearLayout logOut;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the fragment layout
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        myReviews = view.findViewById(R.id.ratedRestos);
+        editProfile = view.findViewById(R.id.editProfile);
+        changePassword = view.findViewById(R.id.changePass);
+        logOut = view.findViewById(R.id.logOut);
+
+        onClickMyReviews();
+        onClickEditProfile();
+        onClickChangePassword();
+        onClickLogOut();
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+    public void onClickMyReviews() {
+        myReviews.setOnClickListener(v -> {
+            Intent i = new Intent(getActivity(), UserReviewsActivity.class);
+            startActivity(i);
+        });
     }
+
+    public void onClickEditProfile() {
+        editProfile.setOnClickListener(view -> {
+            Intent i = new Intent(getActivity(), EditProfileActivity.class);
+            startActivity(i);
+        });
+    }
+
+    public void onClickChangePassword() {
+        changePassword.setOnClickListener(view -> {
+            Intent i = new Intent(getActivity(), ChangePasswordActivity.class);
+            startActivity(i);
+        });
+    }
+
+    public void onClickLogOut() {
+        logOut.setOnClickListener(view -> {
+            Intent i = new Intent(getActivity(), LoginActivity.class);
+
+            //clears all tasks
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        });
+
+    }
+
+
+
+
 }
