@@ -1,15 +1,19 @@
 package com.example.rateeat.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.SearchView;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.rateeat.R;
 import com.example.rateeat.adapters.RestaurantAdapter;
 import com.example.rateeat.models.Restaurant;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +24,28 @@ public class SearchActivity extends AppCompatActivity {
     private RestaurantAdapter adapter;
     private List<Restaurant> allRestaurants = new ArrayList<>();
     private List<Restaurant> filteredRestaurants = new ArrayList<>();
-    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_search);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Search Restaurants");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         searchView = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.searchRecyclerView);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RestaurantAdapter(filteredRestaurants, this);
@@ -50,8 +66,6 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        setupBottomNavigation();
     }
 
     private void loadAllRestaurants() {
@@ -77,26 +91,9 @@ public class SearchActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private void setupBottomNavigation() {
-        bottomNavigationView.setSelectedItemId(R.id.home);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.home) {
-                navigateToMainActivity(false);
-                return true;
-            } else if (id == R.id.profile) {
-                navigateToMainActivity(true);
-                return true;
-            }
-            return false;
-        });
-    }
-
-    private void navigateToMainActivity(boolean openProfile) {
-        Intent intent = new Intent(SearchActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("OPEN_PROFILE", openProfile);
-        startActivity(intent);
-        finish();
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
