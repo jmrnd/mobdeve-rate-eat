@@ -1,5 +1,6 @@
 package com.example.rateeat.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
         searchIcon = binding.toolbar.findViewById(R.id.searchIcon);
         searchIcon.setOnClickListener(v -> {
-            // For now, just display a toast
-            Toast.makeText(this, "Search clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -60,8 +61,12 @@ public class MainActivity extends AppCompatActivity {
         initializeFragments();
         setupBottomNavigation();
 
-        // Show home fragment by default
-        showFragment(homeFragment);
+        if (getIntent().getBooleanExtra("OPEN_PROFILE", false)) {
+            showFragment(profileFragment);
+            binding.bottomNavigationView.setSelectedItemId(R.id.profile);
+        } else {
+            showFragment(homeFragment);
+        }
     }
 
     private void initializeFragments() {

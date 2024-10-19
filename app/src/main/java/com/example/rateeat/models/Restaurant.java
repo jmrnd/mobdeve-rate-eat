@@ -65,10 +65,12 @@ public class Restaurant {
     }
 
     public static void getAllRestaurants(OnCompleteListener<QuerySnapshot> listener) {
-        db.collection("restaurants")
+        FirebaseFirestore.getInstance()
+                .collection("restaurants")
                 .get()
                 .addOnCompleteListener(listener);
     }
+
 
     public static void getRestaurantById(String restaurantId, OnCompleteListener<DocumentSnapshot> listener) {
         db.collection("restaurants")
