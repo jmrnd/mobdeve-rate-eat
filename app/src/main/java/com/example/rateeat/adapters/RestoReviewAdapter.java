@@ -24,7 +24,6 @@ public class RestoReviewAdapter extends RecyclerView.Adapter<RestoReviewAdapter.
     public RestoReviewAdapter(List<RestoReview> restoReviews, SpecificRestaurantActivity activity) {
         this.restoReviews = restoReviews;
         this.context = activity;
-
     }
 
     @NonNull
@@ -39,6 +38,7 @@ public class RestoReviewAdapter extends RecyclerView.Adapter<RestoReviewAdapter.
         RestoReview restoReview = restoReviews.get(position);
         holder.textViewName.setText(restoReview.getName());
         holder.textViewRating.setText(restoReview.getComment());
+        holder.reviewDate.setText(restoReview.getDate());
 
         int resourceId = context.getResources().getIdentifier(restoReview.getUserImageName(), "drawable", context.getPackageName());
         if (resourceId != 0) {
@@ -57,13 +57,14 @@ public class RestoReviewAdapter extends RecyclerView.Adapter<RestoReviewAdapter.
         ImageView userImage;
         TextView textViewName;
         TextView textViewRating;
+        TextView reviewDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             userImage = itemView.findViewById(R.id.userImageView);
             textViewName = itemView.findViewById(R.id.nameTextView);
             textViewRating = itemView.findViewById(R.id.ratingTextView);
-
+            reviewDate = itemView.findViewById(R.id.reviewDate);
         }
     }
 

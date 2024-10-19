@@ -11,14 +11,16 @@ public class RestoReview {
     private String name;
     private String ratingText;
     private String userImage;
+    private String date;
 
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public RestoReview(String id, String name, String ratingText, String userImage){
+    public RestoReview(String id, String name, String ratingText, String userImage, String date){
         this.id = id;
         this.name = name;
         this.ratingText = ratingText;
         this.userImage = userImage;
+        this.date = date;
     }
     public String getId(){return id;}
     public void setId(String id){this.id = id;}
@@ -31,6 +33,9 @@ public class RestoReview {
 
     public String getUserImageName(){return userImage;}
     public void setUserImageName(String userImage){this.userImage = userImage;}
+
+    public String getDate(){return this.date;}
+    public void setDate(String date){this.date = date;}
 
     public static void addReview(RestoReview restoReview, OnCompleteListener<Void> listener) {
         Map<String, Object> restoReviewMap = new HashMap<>();

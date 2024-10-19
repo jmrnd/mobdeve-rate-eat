@@ -96,9 +96,9 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
     //This loads dummy data for user reviews
     private void loadDummyData(){
         restoReviews = new ArrayList<>();
-        restoReviews.add(new RestoReview("null", "Jeka", "Saks lang", "default_image"));
-        restoReviews.add(new RestoReview("null", "Abby", "yay", "default_image"));
-        restoReviews.add(new RestoReview("null", "Jamar", "Sure", "default_image"));
+        restoReviews.add(new RestoReview("null", "Jeka", "Saks lang", "default_image", "10/29/24"));
+        restoReviews.add(new RestoReview("null", "Abby", "yay", "default_image", "10/29/23"));
+        restoReviews.add(new RestoReview("null", "Jamar", "Sure", "default_image", "10/29/22"));
 
     }
 
