@@ -10,37 +10,37 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rateeat.activities.SpecificRestaurantActivity;
-import com.example.rateeat.models.RestoReview;
+import com.example.rateeat.activities.RestaurantActivity;
+import com.example.rateeat.models.Review;
 import com.example.rateeat.R;
 
 import java.util.List;
 
-public class RestoReviewAdapter extends RecyclerView.Adapter<RestoReviewAdapter.ViewHolder> {
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
-    List<RestoReview> restoReviews;
+    List<Review> reviews;
     Context context;
 
-    public RestoReviewAdapter(List<RestoReview> restoReviews, SpecificRestaurantActivity activity) {
-        this.restoReviews = restoReviews;
+    public ReviewAdapter(List<Review> reviews, RestaurantActivity activity) {
+        this.reviews = reviews;
         this.context = activity;
     }
 
     @NonNull
     @Override
-    public RestoReviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review, parent, false);
-        return new RestoReviewAdapter.ViewHolder(view);
+        return new ReviewAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RestoReview restoReview = restoReviews.get(position);
-        holder.textViewName.setText(restoReview.getName());
-        holder.textViewRating.setText(restoReview.getComment());
-        holder.reviewDate.setText(restoReview.getDate());
+        Review review = reviews.get(position);
+        holder.textViewName.setText(review.getName());
+        holder.textViewRating.setText(review.getComment());
+        holder.reviewDate.setText(review.getDate());
 
-        int resourceId = context.getResources().getIdentifier(restoReview.getUserImageName(), "drawable", context.getPackageName());
+        int resourceId = context.getResources().getIdentifier(review.getUserImageName(), "drawable", context.getPackageName());
         if (resourceId != 0) {
             holder.userImage.setImageResource(resourceId);
         } else {
@@ -50,7 +50,7 @@ public class RestoReviewAdapter extends RecyclerView.Adapter<RestoReviewAdapter.
 
     @Override
     public int getItemCount() {
-        return restoReviews.size();
+        return reviews.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

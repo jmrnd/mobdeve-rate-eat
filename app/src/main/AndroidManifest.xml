@@ -24,7 +24,6 @@
             android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
@@ -32,7 +31,7 @@
             android:name=".activities.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SpecificRestaurantActivity"
+            android:name=".activities.RestaurantActivity"
             android:exported="false" />
     </application>
 

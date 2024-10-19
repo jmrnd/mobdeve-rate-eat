@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rateeat.R;
-import com.example.rateeat.activities.SpecificRestaurantActivity;
+import com.example.rateeat.activities.RestaurantActivity;
 import com.example.rateeat.models.Restaurant;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
         holder.itemView.setOnClickListener((View v) -> {
             Toast.makeText(context, restaurant.getName(), Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(context, SpecificRestaurantActivity.class);
+            Intent i = new Intent(context, RestaurantActivity.class);
 
             //These are the data that will be passed from MainActivity to SpecificRestaurantActivity
             i.putExtra("name",restaurant.getName());
